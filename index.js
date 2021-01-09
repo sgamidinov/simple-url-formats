@@ -1,8 +1,8 @@
-function toURLObject(text) {
+function toURLObject(url) {
     let result = {};
 
     try {
-        result = new URL(text);
+        result = new URL(url);
     } catch (e) {
         console.error(e);
     }
@@ -10,7 +10,7 @@ function toURLObject(text) {
     return result;
 }
 
-function toJSON(urlInstance) {
+function toJSON(url) {
     const urlJsonSkelet = {
         protocol: '',
         hostname: '',
@@ -18,12 +18,16 @@ function toJSON(urlInstance) {
         queryParams: {},
     }
 
+    const urlInstance = toURLObject(url);
+
     urlJsonSkelet.protocol = urlInstance.protocol;
     urlJsonSkelet.hostname = urlInstance.hostname;
     urlJsonSkelet.pathname = urlInstance.pathname;
 
-    for (const pair of urlInstance.searchParams) {
-        urlJsonSkelet.queryParams[pair[0]] = pair[1];
+    if (urlInstance.searchParams) {
+        for (const pair of urlInstance.searchParams) {
+            urlJsonSkelet.queryParams[pair[0]] = pair[1];
+        }
     }
 
     return JSON.stringify(urlJsonSkelet);
