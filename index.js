@@ -22,7 +22,7 @@ function toJSON(url) {
 
     urlJsonSkelet.protocol = urlInstance.protocol;
     urlJsonSkelet.hostname = urlInstance.hostname;
-    urlJsonSkelet.pathname = urlInstance.pathname;
+    urlJsonSkelet.pathname = urlInstance.pathname === '/' ? '' : urlInstance.pathname;
 
     if (urlInstance.searchParams) {
         for (const pair of urlInstance.searchParams) {
@@ -48,7 +48,7 @@ function fromJSON(urlJsonSkelet) {
     const jsObject = JSON.parse(urlJsonSkelet);
     const searchString = constructSearchParams(jsObject.queryParams);
 
-    return `${removeSlashes(jsObject.protocol)}//${removeSlashes(jsObject.hostname)}/${removeSlashes(jsObject.pathname)}/?${searchString}`.trim();
+    return `${removeSlashes(jsObject.protocol)}//${removeSlashes(jsObject.hostname)}/${removeSlashes(jsObject.pathname)}?${searchString}`.trim();
 }
 
 function toBase64(source) {
